@@ -1,0 +1,140 @@
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!-- Consider adding a manifest.appcache: h5bp.com/d/Offline -->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+
+  <!-- Use the .htaccess and remove these lines to avoid edge case issues.
+       More info: h5bp.com/i/378 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>dreamyTip 2.0 - a jQuery tooltip plugin</title>
+  <meta name="description" content="New version of dreamyTip, a simple and lovely jQuery tooltip plugin.">
+  <meta name="author" content="Andres Pi">
+  <meta name="keywords" content="tooltip, plugin, jquery, Andres, Pi, web, developer, ui, dreamytip, javascript">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dreamytip.css">
+
+  <!-- All JavaScript at the bottom, except this Modernizr build.
+       Modernizr enables HTML5 elements & feature detects for optimal performance.
+       Create your own custom Modernizr build: www.modernizr.com/download/ -->
+  <script src="js/libs/modernizr-2.5.2.min.js"></script>
+</head>
+<body>
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <header>
+      <h1>DreamyTip, a jQuery tooltip plugin.</h1>
+  </header>
+  <div role="main">
+
+    <table id="demoTable">
+        <tr>
+            <td>Default:</td>                    
+            <td>
+                <span class="tt" title="this is a tooltip">click me</span>
+            </td>                    
+        </tr>
+        <tr>
+            <td>On hover:</td>                    
+            <td>
+
+                <span class="ttH" title="this is a tooltip">hover me</span>
+            </td>                    
+        </tr>
+        <tr>
+            <td>Without close button:</td>                    
+            <td>
+
+                <span class="ttWB" title="this is a tooltip">click me</span>
+            </td>                    
+        </tr>
+        <tr>
+            <td>Close on click the tooltip:</td>                    
+            <td>
+
+                <span class="ttOC" title="this is a tooltip">click me</span>
+            </td>                    
+        </tr>
+        <tr>
+            <td>Position bottom:</td>                    
+            <td>
+                <span class="ttB" title="this is a tooltip">click me</span>
+            </td>                    
+        </tr>
+
+        <tr>
+            <td>Position left:</td>                    
+            <td>
+                <span class="ttL" title="this is a tooltip">click me</span>
+            </td>                    
+        </tr>
+        <tr>
+            <td>Position right:</td>                    
+            <td>
+
+                <span class="ttR" title="this is a tooltip">click me</span>
+            </td>                    
+        </tr>
+        <tr>
+            <td>With callback on show:</td>                    
+            <td>
+                <span class="ttOS" title="this is a tooltip">click me</span>
+            </td>                    
+        </tr>
+
+        <tr>
+            <td>With callback on hide:</td>                    
+            <td>
+                <span class="ttOH" title="this is a tooltip">click me</span>
+            </td>                    
+        </tr>
+    </table>
+    <div id="writeHere"></div>
+  </div>
+  <footer>      
+      2012 <a href="http://labs.dreamsiteweb.com/" target="_blank" >DreamSite Web labs</a> - Find the source at <a href="https://github.com/andres314/dreamyTip" target="_blank">GitHub</a>
+  </footer>
+
+
+  <!-- JavaScript at the bottom for fast page loading -->
+
+  <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+
+  
+  <script src="js/libs/jquery.ba-outside-events.min.js"></script>
+  <script src="js/libs/jquery.dreamyTip.js"></script>
+  <script>
+      
+    $('.tt').dreamyTip(); 
+    $('.ttH').dreamyTip({event:'hover'}); 
+    $('.ttWB').dreamyTip({closeButton: false}); 
+    $('.ttOC').dreamyTip({closeButton: false,closeWithClick:true}); 
+    $('.ttB').dreamyTip({position:'bottom'}); 
+    $('.ttL').dreamyTip({position:'left'}); 
+    $('.ttR').dreamyTip({position:'right'}); 
+    $('.ttOS').dreamyTip({callbackOnShow:"writeSomething('callbackOnShow: the tooltip appear')"}); 
+    $('.ttOH').dreamyTip({callbackOnHide:"writeSomething('callbackOnHide: the tooltip disappear')"}); 
+
+    // Used as example for the callbacks.
+    function writeSomething(msg){
+        if(msg){
+            document.getElementById('writeHere').innerHTML = msg;
+        }
+    }
+  </script>
+  <!-- end scripts -->
+
+ 
+</body>
+</html>
