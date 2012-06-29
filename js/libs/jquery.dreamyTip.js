@@ -66,11 +66,11 @@
             
             //Outside events
             var clickOutsideOn = function (element){
-                $('*:not(#' + element.selector + ')').bind( "click", disappear);
+                element.bind( "clickoutside", disappear);
             } 
 
             var clickOutsideOff = function (element){
-                $('*:not(#' + element.selector + ')').unbind( "click", disappear);
+                element.unbind( "clickoutside", disappear);
             }
             
             //show the tooltip
