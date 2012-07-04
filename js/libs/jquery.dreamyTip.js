@@ -26,7 +26,10 @@
           $('head').append('<link rel="stylesheet" href="css/dreamytip.css" type="text/css" />');
         }
         return this.each(function(){
-            var $this = $(this).css('cursor','pointer');
+            var $this = $(this);
+            if(opts.addCursorPointer){
+              $this.css('cursor','pointer');
+            }
             var dreamyTip;
             
             //delete title attribute to avoid the default behavior
@@ -66,32 +69,34 @@
             
             //Outside events
             var clickOutsideOn = function (element){
-                $('*:not(#' + element.selector + ')').bind( "click", disappear);
+                element.bind( "clickoutside", disappear);
             } 
 
             var clickOutsideOff = function (element){
-                $('*:not(#' + element.selector + ')').unbind( "click", disappear);
+                element.unbind( "clickoutside", disappear);
             }
             
             //show the tooltip
             var appear = function(){
+                $this._isOpen = true; 
                 var _offset = $this.offset();
                 dreamyTip.children('.dreamyTipInner').text($this.attr('dtMsg'));
                 dreamyTip.css({
-                      top: getTop(_offset.top),
-                      left: getLeft(_offset.left),
+                      top: getTop(_offset.top + opts.offsetTopAdd),
+                      left: getLeft(_offset.left + opts.offsetLeftAdd),
                       zIndex: 10000,
                       display:'block'
-                  }).animate({
+                  }).stop().animate({
                       opacity: opts.fade
                   }, opts.duration, opts.easing, function(){
-                      eval(opts.callbackOnShow);
+                      opts.callbackOnShow();
                       clickOutsideOn(dreamyTip);
-                      $this._isOpen = true;
+                      
                   });
             };
             //hide the tooltip
             var disappear = function(){
+                $this._isOpen = false;
                 dreamyTip.animate({
                     opacity:0
                 }, opts.duration, opts.easing, function(){
@@ -99,9 +104,8 @@
                         zIndex:0,
                         display:'none'
                     });
-                    eval(opts.callbackOnHide);
+                    opts.callbackOnHide();
                     clickOutsideOff(dreamyTip);
-                    $this._isOpen = false;
                 });
             };
             //create the tooltip and add it to the DOM
@@ -136,10 +140,10 @@
                 $this.hover(
                   function () {
                     if(!dreamyTip){createTip()}
-                    toogleTooltip();
+                    appear();
                   }, 
                   function () {
-                    toogleTooltip();
+                    disappear();
                   }
                 );
             }else{
@@ -151,6 +155,9 @@
         });
     };
     $.fn.dreamyTip.defaults = {
+        addCursorPointer: true, // add style cursor pointer on the target
+        offsetLeftAdd: 0, // add extra left offset
+        offsetTopAdd: 0, // add extra top offset
         fade:  0.9, // opacity of the tooltip
         duration: 'medium', // duration of the animation
         easing: 'swing', //effect
@@ -159,7 +166,7 @@
         closeWithClick:false, //True to close when you click the tooltip
         position:'top', // top, right, left, bottom
         insertCSS: false, //true to insert the dreamyTip.css dynamically
-        callbackOnShow: false, // Callback for appear function
-        callbackOnHide: false // Callback for disappear function
+        callbackOnShow: function(){}, // Callback for appear function
+        callbackOnHide: function(){} // Callback for disappear function
     };
 })(jQuery);
