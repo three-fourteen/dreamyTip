@@ -118,7 +118,7 @@
                         disappear();
                     });
                 }else{
-                    $('body').append('<div class="dreamyTip" id="dreamyTip' + _id + '"><div class="dreamyTipInner"></div></div>');
+                    $('body').append('<div class="dreamyTip dt-' + opts.position + '" id="dreamyTip' + _id + '"><div class="dreamyTipInner"></div></div>');
                 }
                 dreamyTip = $('#dreamyTip' + _id);
                 if(opts.closeWithClick){
