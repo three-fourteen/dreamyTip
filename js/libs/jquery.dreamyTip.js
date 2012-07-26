@@ -26,142 +26,156 @@
      */
     var DREAMY_TIP = 'dreamyTip';
 
+
+    ////////////////////
+    // Private Methods//
+    ////////////////////
+
+    //get top position for the tooltip
+    var getTop = function($this, optsPosition, offsetTop){
+        var _theTop;
+        if(_theTop<0 || optsPosition == 'bottom'){
+            _theTop = offsetTop + $this.height();
+        }else if(optsPosition == 'left' || optsPosition == 'right'){
+            _theTop = offsetTop + $this.outerHeight()/2 - $this.dreamyTip.outerHeight()/2;
+        }else{
+            _theTop = offsetTop - $this.dreamyTip.outerHeight();
+        }
+        return _theTop;
+    };
+
+    //get left position for the tooltip
+    var getLeft = function($this, optsPosition, offsetLeft){
+        var newOffsetLeft;
+        switch(optsPosition){
+            case 'left':
+                newOffsetLeft = Math.abs(offsetLeft - $this.dreamyTip.outerWidth()) - 5;
+                break;
+            case 'right':
+                newOffsetLeft = Math.abs(offsetLeft + $this.outerWidth()) + 5;
+                break;
+            default:
+                newOffsetLeft = Math.abs(offsetLeft + $this.outerWidth()/2 - $this.dreamyTip.outerWidth()/2);
+                break;
+        }
+        return newOffsetLeft;
+    };
+
+    //Outside events
+    var clickOutsideOn = function ($this){
+        $this.dreamyTip.bind( "clickoutside",{that: $this}, disappear);
+    } 
+
+    var clickOutsideOff = function ($this){
+        $this.dreamyTip.unbind( "clickoutside", disappear);
+    }
+
+    //show the tooltip
+    var appear = function($this){
+        var opts = $this.data(DREAMY_TIP).opts; 
+        $this._isOpen = true; 
+        var _offset = $this.offset();
+        $this.dreamyTip.children('.dreamyTipInner').text($this.attr('data-msg'));
+        $this.dreamyTip.css({
+            top: getTop($this, opts.position, _offset.top + opts.offsetTopAdd),
+            left: getLeft($this, opts.position, _offset.left + opts.offsetLeftAdd),
+            zIndex: 10000,
+            display:'block'
+        }).stop().animate({
+            opacity: opts.fade
+        }, opts.duration, opts.easing, function(){
+            opts.callbackOnShow();
+            clickOutsideOn($this);
+
+        });
+    };
+    //hide the tooltip
+    var disappear = function($this){
+        // Check if we came from the event bind or unbinder
+        if($this.data.that){
+          $this = $this.data.that;
+        }
+        var opts = $this.data(DREAMY_TIP).opts; 
+        $this._isOpen = false;
+        $this.dreamyTip.animate({
+            opacity:0
+        }, opts.duration, opts.easing, function(){
+            $(this).css({
+                zIndex:0,
+                display:'none'
+            });
+            opts.callbackOnHide();
+            clickOutsideOff($this);
+        });
+    };
+
+    // Tooltip toggle
+    var toogleTooltip = function($this){
+        if($this._isOpen){
+            disappear($this);
+        }else{
+            appear($this);
+        }                    
+    }
+
     /**
      * Public methods
      */
     var publicMethods = {
         init: function(options){
             return this.each(function(){
-                var opts  = $.extend({}, $.fn[DREAMY_TIP].defaults, options);
+                var opts = $.extend({}, $.fn[DREAMY_TIP].defaults, options);
                 var $this = $(this);
+                // Assign false to dreamyTip as the tooltip is not created yet
+                $this.dreamyTip = false;
                 if(opts.addCursorPointer){
                     $this.css('cursor','pointer');
                 }
-                var data  = $this.data(DREAMY_TIP);
+                //delete title attribute to avoid the default behavior
+                $this.attr('data-msg',$this.attr('title'));
+                $this.removeAttr('title');
+
+                var data = $this.data(DREAMY_TIP);
                 if (!data) {
                     $this.data(DREAMY_TIP, {
                         opts: opts,
                         id: new Date().getTime() //get date and use it to set an unique id to the object
                     });
                 }
-
-                var dreamyTip;
-
-                //delete title attribute to avoid the default behavior
-                $this.attr('dtMsg',$this.attr('title'));
-                $this.removeAttr('title');
-
-
-                //get top position for the tooltip
-                var getTop = function(offsetTop){
-                    var _theTop;
-                    if(_theTop<0 || opts.position == 'bottom'){
-                        _theTop = offsetTop + $this.height();
-                    }else if(opts.position == 'left' || opts.position == 'right'){
-                        _theTop = offsetTop + $this.outerHeight()/2 - dreamyTip.outerHeight()/2;
-                    }else{
-                        _theTop = offsetTop - dreamyTip.outerHeight();
-                    }
-                    return _theTop;
-                };
-
-                //get left position for the tooltip
-                var getLeft = function(offsetLeft){
-                    var newOffsetLeft;
-                    switch(opts.position){
-                        case 'left':
-                            newOffsetLeft = Math.abs(offsetLeft - dreamyTip.outerWidth()) - 5;
-                            break;
-                        case 'right':
-                            newOffsetLeft = Math.abs(offsetLeft + $this.outerWidth()) + 5;
-                            break;
-                        default:
-                            newOffsetLeft = Math.abs(offsetLeft + $this.outerWidth()/2 - dreamyTip.outerWidth()/2);
-                            break;
-                    }
-                    return newOffsetLeft;
-                };
-
-                //Outside events
-                var clickOutsideOn = function (element){
-                    element.bind( "clickoutside", disappear);
-                } 
-
-                var clickOutsideOff = function (element){
-                    element.unbind( "clickoutside", disappear);
-                }
-
-                //show the tooltip
-                var appear = function(){
-                    $this._isOpen = true; 
-                    var _offset = $this.offset();
-                    dreamyTip.children('.dreamyTipInner').text($this.attr('dtMsg'));
-                    dreamyTip.css({
-                        top: getTop(_offset.top + opts.offsetTopAdd),
-                        left: getLeft(_offset.left + opts.offsetLeftAdd),
-                        zIndex: 10000,
-                        display:'block'
-                    }).stop().animate({
-                        opacity: opts.fade
-                    }, opts.duration, opts.easing, function(){
-                        opts.callbackOnShow();
-                        clickOutsideOn(dreamyTip);
-
-                    });
-                };
-                //hide the tooltip
-                var disappear = function(){
-                    $this._isOpen = false;
-                    dreamyTip.animate({
-                        opacity:0
-                    }, opts.duration, opts.easing, function(){
-                        $(this).css({
-                            zIndex:0,
-                            display:'none'
-                        });
-                        opts.callbackOnHide();
-                        clickOutsideOff(dreamyTip);
-                    });
-                };
+                
                 /**
                  * Create the tooltip and add it to the DOM
-                 * @param {number} id timestamp to use as element ID
+                 * @param {object} $this actual jQuery object
                  */
-                var createTip = function(id){
+                var createTip = function($this){
+                    var id = $this.data(DREAMY_TIP).id;
                     if(opts.closeButton){
-                        $('body').append('<div class="dreamyTip dt-' + opts.position + '" id="dreamyTip' + id + '"><div class="dreamyTipBtn">x</div><div class="dreamyTipInner"></div></div>');
-                        $('#dreamyTip' + _id + ' .dreamyTipBtn').bind('click', function(){
-                            disappear();
+                        $('body').append('<div class="dreamyTip dt-' + opts.position + '" id="' + DREAMY_TIP + id + '"><div class="dreamyTipBtn">x</div><div class="dreamyTipInner"></div></div>');
+                        $('#dreamyTip' + id + ' .dreamyTipBtn').bind('click', function(){
+                            disappear($this);
                         });
                     }else{
-                        $('body').append('<div class="dreamyTip dt-' + opts.position + '" id="dreamyTip' + id + '"><div class="dreamyTipInner"></div></div>');
+                        $('body').append('<div class="dreamyTip dt-' + opts.position + '" id="' + DREAMY_TIP + id + '"><div class="dreamyTipInner"></div></div>');
                     }
-                    dreamyTip = $('#dreamyTip' + id);
+                    $this.dreamyTip = $('#' + DREAMY_TIP + id);
                     if(opts.closeWithClick){
-                        dreamyTip.bind('click', function(){
-                            disappear();
+                        $this.dreamyTip.bind('click', function(){
+                            disappear($this);
                         });
                     }
                     if(opts.fontSize){
-                      dreamyTip.css('font-size',opts.fontSize);
+                      $this.dreamyTip.css('font-size',opts.fontSize);
                     }
                     if(opts.backgroundPosition){
-                      dreamyTip.css('background-position',opts.backgroundPosition);
+                      $this.dreamyTip.css('background-position',opts.backgroundPosition);
                     }
                 };
 
-                //event
-                var toogleTooltip = function(){
-                    if($this._isOpen){
-                        disappear();
-                    }else{
-                        appear();
-                    }                    
-                }
+                // Event
                 $this.bind(opts.event + '.' + DREAMY_TIP,
                   function(){
-                    if(!dreamyTip){createTip($(this).data(DREAMY_TIP).id)}
-                    toogleTooltip();
+                    if(!$this.dreamyTip){createTip($this)}
+                    toogleTooltip($this);
                 });
             });
         },
@@ -172,10 +186,26 @@
                 // Unbind event from the target
                 $(this).unbind('.' + DREAMY_TIP);
                 // Remove the tooltip from the DOM
-                $('#dreamyTip' + data.id).remove();
+                $('#' + DREAMY_TIP + data.id).remove();
                 // Remove the data
                 $this.removeData(DREAMY_TIP);
             });
+        },
+        show: function() {
+          return this.each(function() {
+            // TODO: Implement real public methods.
+            var $this = $(this);
+            var data  = $this.data(DREAMY_TIP);
+/*
+            // Example use of a member variable and a private method.
+            if (data.memberVar1) {
+                myPrivateMethod1($this);
+            }
+            // Example use of options.
+            if (data.opts.option1) {
+                myPrivateMethod2($this);
+            }*/
+          })
         }
     };
 
