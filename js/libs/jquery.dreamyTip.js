@@ -1,5 +1,5 @@
 /*
-* @fileoverview DreamyTip v2.0 - jQuery tooltip widget
+* @fileoverview DreamyTip v3.0 - jQuery tooltip widget
 * @author andres(at)dreamsiteweb.com (Andres Pi)
 * 
 * 2012 - dreamsiteweb.com
