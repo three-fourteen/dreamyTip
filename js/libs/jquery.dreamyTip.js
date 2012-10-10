@@ -89,7 +89,9 @@
 
         });
         if(opts.autoCloseAfter){
-            setTimeout(disappear,opts.autoCloseAfter);
+            setTimeout(function(){
+                disappear($this)
+            },opts.autoCloseAfter);
         }
     };
     //hide the tooltip
