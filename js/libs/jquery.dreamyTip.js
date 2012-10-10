@@ -1,5 +1,5 @@
 /*
-* @fileoverview DreamyTip v3.0 - jQuery tooltip widget
+* @fileoverview DreamyTip v3.1 - jQuery tooltip widget
 * @author andres(at)dreamsiteweb.com (Andres Pi)
 * 
 * 2012 - dreamsiteweb.com
@@ -75,7 +75,7 @@
         var opts = $this.data(DREAMY_TIP).opts; 
         $this._isOpen = true; 
         var _offset = $this.offset();
-        $this.dreamyTip.children('.dreamyTipInner').text($this.attr('data-msg'));
+        $this.dreamyTip.children('.dreamyTipInner').text($this.data('dtMsg'));
         $this.dreamyTip.css({
             top: getTop($this, opts.position, _offset.top + opts.offsetTopAdd),
             left: getLeft($this, opts.position, _offset.left + opts.offsetLeftAdd),
@@ -88,6 +88,9 @@
             clickOutsideOn($this);
 
         });
+        if(opts.autoCloseAfter){
+            setTimeout(disappear,opts.autoCloseAfter);
+        }
     };
     //hide the tooltip
     var disappear = function($this){
@@ -132,8 +135,7 @@
                     $this.css('cursor','pointer');
                 }
                 //delete title attribute to avoid the default behavior
-                $this.attr('data-msg',$this.attr('title'));
-                $this.removeAttr('title');
+                $this.data('dtMsg',$this.attr('title')).removeAttr('title');
 
                 var data = $this.data(DREAMY_TIP);
                 if (!data) {
@@ -177,6 +179,11 @@
                     if(!$this.dreamyTip){createTip($this)}
                     toogleTooltip($this);
                 });
+                if(opts.closeOnBlur){
+                  $this.bind('blur.' + DREAMY_TIP,function () {
+                    disappear($this);
+                  })
+                }
             });
         },
         destroy: function(){
@@ -234,9 +241,11 @@
         fade:  0.9, // opacity of the tooltip
         duration: 'medium', // duration of the animation
         easing: 'swing', //effect
-        event:'click', // click & hover are allowed
+        event:'click', // click, focus, blur & hover are allowed
         closeButton: true, //True for the "x" button in the tooltip
         closeWithClick:false, //True to close when you click the tooltip
+        closeOnBlur:false, //True to close when the trigger element lose focus
+        autoCloseAfter: false, // milliseconds to wait to auto close
         position:'top', // top, right, left, bottom
         fontSize: false, // Set a different font-size than the default on CSS
         callbackOnShow: function(){}, // Callback for appear function

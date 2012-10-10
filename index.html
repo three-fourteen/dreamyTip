@@ -51,6 +51,18 @@
             </td>                    
         </tr>
         <tr>
+            <td>On focus:</td>                    
+            <td>
+                <input class="ttF" title="this is a tooltip" placeholder="focus me">
+            </td>                    
+        </tr>
+        <tr>
+            <td>On blur:</td>                    
+            <td>
+                <input class="ttBlur" title="this is a tooltip" placeholder="blur me">
+            </td>                    
+        </tr>
+        <tr>
             <td>Without close button:</td>                    
             <td>
 
@@ -62,6 +74,13 @@
             <td>
 
                 <span class="ttOC" title="this is a tooltip">click me</span>
+            </td>                    
+        </tr>
+        <tr>
+            <td>Auto Close:</td>                    
+            <td>
+
+                <span class="ttAC" title="this is a tooltip">click me</span>
             </td>                    
         </tr>
         <tr>
@@ -102,7 +121,7 @@
   </div>
   <a href="https://github.com/andres314/dreamyTip"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
   <footer>      
-      2012 <a href="http://labs.dreamsiteweb.com/" target="_blank" >DreamSite Web labs</a> - Fork me on <a href="https://github.com/andres314/dreamyTip" target="_blank">GitHub</a>
+      2012 <a href="http://dreamsiteweb.com/category/news/" target="_blank" >DreamSite Web</a> - <a href="https://github.com/andres314/dreamyTip/zipball/master">Download</a> - Fork me on <a href="https://github.com/andres314/dreamyTip" target="_blank">GitHub</a>
   </footer>
 
 
@@ -118,8 +137,11 @@
       
     $('.tt').dreamyTip(); 
     $('.ttH').dreamyTip({event:'hover'}); 
+    $('.ttF').dreamyTip({addCursorPointer:false,event:'focus'}); 
+    $('.ttBlur').dreamyTip({addCursorPointer:false,event:'blur'}); 
     $('.ttWB').dreamyTip({closeButton: false}); 
     $('.ttOC').dreamyTip({closeButton: false,closeWithClick:true}); 
+    $('.ttAC').dreamyTip({closeButton: false,autoCloseAfter:1500}); 
     $('.ttB').dreamyTip({position:'bottom'}); 
     $('.ttL').dreamyTip({position:'left'}); 
     $('.ttR').dreamyTip({position:'right'}); 
