@@ -132,7 +132,7 @@
   <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 
   <script src="js/libs/jquery.ba-outside-events.min.js"></script>
-  <script src="js/libs/jquery.dreamyTip.min.js"></script>
+  <script src="js/libs/jquery.dreamyTip.js"></script>
   <script>
       
     $('.tt').dreamyTip(); 
@@ -145,13 +145,15 @@
     $('.ttB').dreamyTip({position:'bottom'}); 
     $('.ttL').dreamyTip({position:'left'}); 
     $('.ttR').dreamyTip({position:'right'}); 
-    $('.ttOS').dreamyTip({callbackOnShow:"writeSomething('callbackOnShow: the tooltip appear')"}); 
-    $('.ttOH').dreamyTip({callbackOnHide:"writeSomething('callbackOnHide: the tooltip disappear')"}); 
+    $('.ttOS').dreamyTip({callbackOnShow:{f:writeSomething,params:'callbackOnShow: the tooltip appear'}}); 
+    $('.ttOH').dreamyTip({callbackOnHide:writeSomething});
 
     // Used as example for the callbacks.
     function writeSomething(msg){
         if(msg){
             document.getElementById('writeHere').innerHTML = msg;
+        }else{
+            document.getElementById('writeHere').innerHTML = 'no message';
         }
     }
   </script>
