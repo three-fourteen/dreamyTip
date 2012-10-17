@@ -84,14 +84,14 @@
         }).stop().animate({
             opacity: opts.fade
         }, opts.duration, opts.easing, function(){
-            if(typeof opts.callbackOnShow == 'object'){
-                opts.callbackOnShow.f(opts.callbackOnShow.params);
-            }else{
-                opts.callbackOnShow();
-            }
             clickOutsideOn($this);
-
         });
+        if(typeof opts.callbackOnShow == 'object'){
+            opts.callbackOnShow['f'](opts.callbackOnShow['params']);
+        }else{
+            opts.callbackOnShow();
+        }
+
         if(opts.autoCloseAfter){
             setTimeout(function(){
                 disappear($this)
@@ -114,7 +114,7 @@
                 display:'none'
             });
             if(typeof opts.callbackOnHide == 'object'){
-                opts.callbackOnHide.f(opts.callbackOnHide.params);
+                opts.callbackOnHide['f'](opts.callbackOnHide['params']);
             }else{
                 opts.callbackOnHide();
             }
