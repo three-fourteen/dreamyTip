@@ -61,15 +61,6 @@
         return newOffsetLeft;
     };
 
-    //Outside events
-    var clickOutsideOn = function ($this){
-        $this.dreamyTipElememt.bind( "clickoutside",{that: $this}, disappear);
-    } 
-
-    var clickOutsideOff = function ($this){
-        $this.dreamyTipElememt.unbind( "clickoutside", disappear);
-    }
-
     //show the tooltip
     var appear = function($this){
         var opts = $this.data(DREAMY_TIP).opts,
@@ -83,9 +74,7 @@
             display:'block'
         }).stop().animate({
             opacity: opts.fade
-        }, opts.duration, opts.easing, function(){
-            clickOutsideOn($this);
-        });
+        }, opts.duration, opts.easing);
         if(typeof opts.callbackOnShow == 'object'){
             opts.callbackOnShow['f'](opts.callbackOnShow['params']);
         }else{
@@ -104,6 +93,9 @@
         if($this.data.that){
           $this = $this.data.that;
         }
+        // Unbind the event from the HTML dom element
+        $('html').unbind('.' + DREAMY_TIP + $this.data(DREAMY_TIP).id);
+
         var opts = $this.data(DREAMY_TIP).opts; 
         $this._isOpen = false;
         $this.dreamyTipElememt.animate({
@@ -118,7 +110,6 @@
             }else{
                 opts.callbackOnHide();
             }
-            clickOutsideOff($this);
         });
     };
 
@@ -127,7 +118,7 @@
         if($this._isOpen){
             disappear($this);
         }else{
-            appear($this);
+            if($this.data('dtMsg')!=''){appear($this)}
         }                    
     }
 
@@ -138,7 +129,7 @@
     var createTip = function($this){
         var id = $this.data(DREAMY_TIP).id,
             opts = $this.data(DREAMY_TIP).opts;
-        if(opts.closeButton){
+        if(opts.closeButton && opts.event != 'hover'){
             $('body').append('<div class="dreamyTip dt-' + opts.position + '" id="' + DREAMY_TIP + id + '"><div class="dreamyTipBtn">x</div><div class="dreamyTipInner"></div></div>');
             $('#dreamyTip' + id + ' .dreamyTipBtn').bind('click', function(){
                 disappear($this);
@@ -174,7 +165,13 @@
                     $this.css('cursor','pointer');
                 }
                 //delete title attribute to avoid the default behavior
-                $this.data('dtMsg',$this.attr('title')).removeAttr('title');
+                var title = $this.attr('title');
+                if(title!=undefined){
+                    $this.removeAttr('title')
+                }else{
+                    title='';
+                }
+                $this.data('dtMsg',title);
 
                 var data = $this.data(DREAMY_TIP);
                 if (!data) {
@@ -183,20 +180,58 @@
                         id: new Date().getTime() //get date and use it to set an unique id to the object
                     });
                 }
-                
-                
 
-                // Event
+                // Events
+                function bindCloser($this){
+                    var data = $this.data(DREAMY_TIP),
+                        dataID = data.id,
+                        triggerEventBlur = data.opts.event == 'blur';
+                    if(triggerEventBlur){
+                        var counter = 0;
+                    }
+                    function closeIt(){
+                        $this.dreamyTipElememt = $('#' + DREAMY_TIP + dataID);
+                        disappear($this);
+                    }
+                    $('html').bind('click.' + DREAMY_TIP + dataID ,function() {
+                        // Don't close the tooltip on blur if the trigger event is onblur
+                        if(triggerEventBlur){
+                            if(counter>0){
+                                closeIt();
+                            }else{
+                                counter++;
+                            }
+                        }else{
+                            closeIt();
+                        }
+                    });
+                }
+
                 $this.bind(opts.event + '.' + DREAMY_TIP,
-                  function(){
+                  function(event){
                     if(!$this.dreamyTipElememt){createTip($this)}
                     toogleTooltip($this);
+                    bindCloser($this);
+                    event.stopPropagation();
                 });
+
                 if(opts.closeOnBlur){
                   $this.bind('blur.' + DREAMY_TIP,function () {
                     disappear($this);
-                  })
+                  });
                 }
+                
+                // Avoid close the tooltip when you click the trigger
+                $this.bind('click.' + DREAMY_TIP,
+                  function(event){
+                    event.stopPropagation();
+                });
+                
+                // Avoid to close the tooltip when you click on it.
+                $('html').on('click.' + DREAMY_TIP,'.dreamyTip',function(event){
+                    event.stopPropagation();
+                });
+
             });
         },
         destroy: function(){
@@ -216,7 +251,7 @@
             var $this = $(this),
                 data = $this.data(DREAMY_TIP);               
             if($this.dreamyTipElememt != 'undefined'){createTip($this)}
-            appear($this);
+            if($this.data('dtMsg')!=''){appear($this)}
           })
         },
         close: function() {
@@ -254,7 +289,7 @@
         fade:  0.9, // opacity of the tooltip
         duration: 'medium', // duration of the animation
         easing: 'swing', //effect
-        event:'click', // click, focus, blur & hover are allowed
+        event:'click', // click, focus, blur & hover are allowed or none in case you want to trigger manually
         closeButton: true, //True for the "x" button in the tooltip
         closeWithClick:false, //True to close when you click the tooltip
         closeOnBlur:false, //True to close when the trigger element lose focus
