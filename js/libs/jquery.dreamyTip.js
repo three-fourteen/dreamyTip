@@ -212,7 +212,7 @@
                     if(!$this.dreamyTipElememt){createTip($this)}
                     toogleTooltip($this);
                     bindCloser($this);
-                    event.stopPropagation();
+                    //event.stopPropagation();
                 });
 
                 if(opts.closeOnBlur){
