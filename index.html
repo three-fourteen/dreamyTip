@@ -116,6 +116,12 @@
                 <span class="ttOH" title="this is a tooltip">click me</span>
             </td>                    
         </tr>
+        <tr>
+            <td>With a 1 second delay before show:</td>                    
+            <td>
+                <span class="ttSD" title="this is a tooltip">click me</span>
+            </td>                    
+        </tr>
     </table>
     <div id="writeHere"></div>
   </div>
@@ -131,7 +137,7 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 
-  <script src="js/libs/jquery.dreamyTip.js"></script>
+  <script src="js/libs/jquery.dreamyTip.min.js"></script>
   <script>
       
     $('.tt').dreamyTip(); 
@@ -146,6 +152,7 @@
     $('.ttR').dreamyTip({position:'right'}); 
     $('.ttOS').dreamyTip({callbackOnShow:{f:writeSomething,params:'callbackOnShow: the tooltip appear'}}); 
     $('.ttOH').dreamyTip({callbackOnHide:writeSomething});
+    $('.ttSD').dreamyTip({startDelay:1000});
 
     // Used as example for the callbacks.
     function writeSomething(msg){

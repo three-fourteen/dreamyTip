@@ -1,5 +1,5 @@
 /*
-* @fileoverview DreamyTip v3.2 - jQuery tooltip widget
+* @fileoverview DreamyTip v3.3 - jQuery tooltip widget
 * @author andres(at)dreamsiteweb.com (Andres Pi)
 * 
 * 2012 - dreamsiteweb.com
@@ -13,10 +13,7 @@
 * The only settings in the HTML is the title attribute
 * in the tag that will have the tooltip, which will
 * contain the text to display. 
-* You should include this file, dreamytip.css, dreamytip.png and the 
-* jquery.ba-outside-events.min.js plugin by Ben Alman for the events
-* outside the tooltip(for more info 
-* about this plugin check this site http://bit.ly/gCHiHT). 
+* You should include the plugin file, dreamytip.css and dreamytip.png
 *
 */
 (function($) {
@@ -67,25 +64,27 @@
             _offset = $this.offset();
         $this._isOpen = true; 
         $this.dreamyTipElememt.children('.dreamyTipInner').text($this.data('dtMsg'));
-        $this.dreamyTipElememt.css({
-            top: getTop($this, opts.position, _offset.top + opts.offsetTopAdd),
-            left: getLeft($this, opts.position, _offset.left + opts.offsetLeftAdd),
-            zIndex: 10000,
-            display:'block'
-        }).stop().animate({
-            opacity: opts.fade
-        }, opts.duration, opts.easing);
-        if(typeof opts.callbackOnShow == 'object'){
-            opts.callbackOnShow['f'](opts.callbackOnShow['params']);
-        }else{
-            opts.callbackOnShow();
-        }
+        setTimeout(function(){
+            $this.dreamyTipElememt.css({
+                top: getTop($this, opts.position, _offset.top + opts.offsetTopAdd),
+                left: getLeft($this, opts.position, _offset.left + opts.offsetLeftAdd),
+                zIndex: 10000,
+                display:'block'
+            }).stop().animate({
+                opacity: opts.fade
+            }, opts.duration, opts.easing);
+            if(typeof opts.callbackOnShow == 'object'){
+                opts.callbackOnShow['f'](opts.callbackOnShow['params']);
+            }else{
+                opts.callbackOnShow();
+            }
 
-        if(opts.autoCloseAfter){
-            setTimeout(function(){
-                disappear($this)
-            },opts.autoCloseAfter);
-        }
+            if(opts.autoCloseAfter){
+                setTimeout(function(){
+                    disappear($this)
+                },opts.autoCloseAfter);
+            }
+        },  opts.startDelay);
     };
     //hide the tooltip
     var disappear = function($this){
@@ -170,6 +169,9 @@
                     $this.removeAttr('title')
                 }else{
                     title='';
+                }
+                if(opts.msg){
+                    title=opts.msg; 
                 }
                 $this.data('dtMsg',title);
 
@@ -287,6 +289,7 @@
         offsetTopAdd: 0, // add extra top offset
         backgroundPosition: false, // String to set a different background position (ex. "30px", "5% 10px", "left top")
         fade:  0.9, // opacity of the tooltip
+        startDelay: 0, // Add a delay time before the tooltip appear
         duration: 'medium', // duration of the animation
         easing: 'swing', //effect
         event:'click', // click, focus, blur & hover are allowed or none in case you want to trigger manually
@@ -296,6 +299,7 @@
         autoCloseAfter: false, // milliseconds to wait to auto close
         position:'top', // top, right, left, bottom
         fontSize: false, // Set a different font-size than the default on CSS
+        msg:false, // String with the message
         callbackOnShow: function(){}, // Callback for appear function. Could be the name of the function or if you need pass params an object like this: {f:writeSomething,params:'callbackOnShow: the tooltip appear'}}
         callbackOnHide: function(){} // Callback for disappear function. Could be the name of the function or if you need pass params an object like this: {f:writeSomething,params:'callbackOnShow: the tooltip appear'}}
     };

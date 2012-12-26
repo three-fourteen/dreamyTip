@@ -13,6 +13,7 @@ The avaliable **options** are:
 *  offsetTopAdd: 0, // add extra top offset
 *  backgroundPosition: false, // String to set a different background position (ex. "30px", "5% 10px", "left top")
 *  fade:  0.9, // opacity of the tooltip
+*  startDelay: 0, // Add a delay time before the tooltip appear
 *  duration: 'medium', // duration of the animation
 *  easing: 'swing', //effect
 *  event:'click', // click, focus, blur & hover are allowed
