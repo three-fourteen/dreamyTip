@@ -1,4 +1,4 @@
-# DreamyTip: a simple and lovely jQuery tooltip #
+# DreamyTip: a simple and lovely jQuery tooltip v3.4 #
 
 The usage is similar to any Pluing jQuery.
 The only settings in the HTML is the title attribute
@@ -17,6 +17,7 @@ The avaliable **options** are:
 *  duration: 'medium', // duration of the animation
 *  easing: 'swing', //effect
 *  event:'click', // click, focus, blur & hover are allowed
+*  persistHover: false, // enable a tooltip to persist until the user clicks somewhere else on the page
 *  closeButton: true, //True for the "x" button in the tooltip
 *  closeWithClick:false, //True to close when you click the tooltip
 *  closeOnBlur:false, //True to close when the trigger element lose focus
@@ -27,10 +28,3 @@ The avaliable **options** are:
 *  callbackOnHide: function(){} // Callback for disappear function. Could be the name of the function or if you need pass params an object like this: {f:writeSomething,params:'callbackOnShow: the tooltip appear'}}
 
 You can find some demos [here](http://dreamsiteweb.com/jquery/plugins/dreamytip/ "DreamyTip demo page")
-
-----------------------------------------------------------------------
-
-CONTACT INFORMATION:
-
-Andres Pi
-andres@dreamsiteweb.com

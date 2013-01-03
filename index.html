@@ -44,10 +44,36 @@
             </td>                    
         </tr>
         <tr>
+            <td>Default with HTML:</td>
+            <td>
+                <span class="ttHTML" title="this is a <strong>tooltip</strong> with some <em>HTML</em> and a <a href='https://github.com/andres314/dreamyTip' target='_blank'>link</a>">click me</span>
+            </td>                    
+        </tr>
+        <tr>
+            <td>Default without title attribute:</td>
+            <td>
+                <span class="ttMSG">click me</span>
+            </td>                    
+        </tr>
+        <tr>
             <td>On hover:</td>                    
             <td>
 
                 <span class="ttH" title="this is a tooltip">hover me</span>
+            </td>                    
+        </tr>
+        <tr>
+            <td>On hover and persistent on mouse out:</td>                    
+            <td>
+
+                <span class="ttPH" title="this is a tooltip">hover me</span>
+            </td>                    
+        </tr>
+        <tr>
+            <td>On hover and persistent on mouse out with autoclose:</td>                    
+            <td>
+
+                <span class="ttPHT" title="this is a tooltip">hover me</span>
             </td>                    
         </tr>
         <tr>
@@ -140,8 +166,12 @@
   <script src="js/libs/jquery.dreamyTip.min.js"></script>
   <script>
       
-    $('.tt').dreamyTip(); 
-    $('.ttH').dreamyTip({event:'hover'}); 
+    $('.tt').dreamyTip();
+    $('.ttHTML').dreamyTip();
+    $('.ttMSG').dreamyTip({msg:'This is a nice tooltip.'}); 
+    $('.ttH').dreamyTip({event:'hover'});
+    $('.ttPH').dreamyTip({event:'hover', persistHover:true});
+    $('.ttPHT').dreamyTip({event:'hover', persistHover:true,autoCloseAfter:2000});
     $('.ttF').dreamyTip({addCursorPointer:false,event:'focus'}); 
     $('.ttBlur').dreamyTip({addCursorPointer:false,event:'blur'}); 
     $('.ttWB').dreamyTip({closeButton: false}); 

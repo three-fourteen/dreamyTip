@@ -1,5 +1,5 @@
 /*
-* @fileoverview DreamyTip v3.3 - jQuery tooltip widget
+* @fileoverview DreamyTip v3.4 - jQuery tooltip widget
 * @author andres(at)dreamsiteweb.com (Andres Pi)
 * 
 * 2012 - dreamsiteweb.com
@@ -63,7 +63,7 @@
         var opts = $this.data(DREAMY_TIP).opts,
             _offset = $this.offset();
         $this._isOpen = true; 
-        $this.dreamyTipElememt.children('.dreamyTipInner').text($this.data('dtMsg'));
+        $this.dreamyTipElememt.children('.dreamyTipInner').html($this.data('dtMsg'));
         setTimeout(function(){
             $this.dreamyTipElememt.css({
                 top: getTop($this, opts.position, _offset.top + opts.offsetTopAdd),
@@ -114,8 +114,11 @@
 
     // Tooltip toggle
     var toogleTooltip = function($this){
+        var opts = $this.data(DREAMY_TIP).opts;
         if($this._isOpen){
-            disappear($this);
+            if(!opts.persistHover){
+                disappear($this);
+            }
         }else{
             if($this.data('dtMsg')!=''){appear($this)}
         }                    
@@ -161,17 +164,17 @@
                 // Assign false to dreamyTip as the tooltip is not created yet
                 $this.dreamyTipElememt = false;
                 if(opts.addCursorPointer){
-                    $this.css('cursor','pointer');
+                    $this.css('cursor', 'pointer');
                 }
                 //delete title attribute to avoid the default behavior
                 var title = $this.attr('title');
                 if(title!=undefined){
                     $this.removeAttr('title')
                 }else{
-                    title='';
+                    title = '';
                 }
                 if(opts.msg){
-                    title=opts.msg; 
+                    title = opts.msg; 
                 }
                 $this.data('dtMsg',title);
 
@@ -191,7 +194,7 @@
                     if(triggerEventBlur){
                         var counter = 0;
                     }
-                    function closeIt(){
+                    var closeIt = function(){
                         $this.dreamyTipElememt = $('#' + DREAMY_TIP + dataID);
                         disappear($this);
                     }
@@ -212,9 +215,8 @@
                 $this.bind(opts.event + '.' + DREAMY_TIP,
                   function(event){
                     if(!$this.dreamyTipElememt){createTip($this)}
-                    toogleTooltip($this);
+                    toogleTooltip($this, event);
                     bindCloser($this);
-                    //event.stopPropagation();
                 });
 
                 if(opts.closeOnBlur){
@@ -293,6 +295,7 @@
         duration: 'medium', // duration of the animation
         easing: 'swing', //effect
         event:'click', // click, focus, blur & hover are allowed or none in case you want to trigger manually
+        persistHover: false, // enable a tooltip to persist until the user clicks somewhere else on the page
         closeButton: true, //True for the "x" button in the tooltip
         closeWithClick:false, //True to close when you click the tooltip
         closeOnBlur:false, //True to close when the trigger element lose focus
