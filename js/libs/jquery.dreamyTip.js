@@ -70,7 +70,7 @@
                 left: getLeft($this, opts.position, _offset.left + opts.offsetLeftAdd),
                 zIndex: 10000,
                 display:'block'
-            }).stop().animate({
+            }).stop(opts.removeQueuedAnimation).animate({
                 opacity: opts.fade
             }, opts.duration, opts.easing);
             if(typeof opts.callbackOnShow == 'object'){
@@ -132,12 +132,12 @@
         var id = $this.data(DREAMY_TIP).id,
             opts = $this.data(DREAMY_TIP).opts;
         if(opts.closeButton && opts.event != 'hover'){
-            $('body').append('<div class="dreamyTip dt-' + opts.position + '" id="' + DREAMY_TIP + id + '"><div class="dreamyTipBtn">x</div><div class="dreamyTipInner"></div></div>');
+            $('body').append('<div class="dreamyTip dt-' + opts.position + '" id="' + DREAMY_TIP + id + '"><div class="dreamyTipBtn">x</div><div class="dreamyTipInner" style="text-align:' + opts.textAlign + '"></div></div>');
             $('#dreamyTip' + id + ' .dreamyTipBtn').bind('click', function(){
                 disappear($this);
             });
         }else{
-            $('body').append('<div class="dreamyTip dt-' + opts.position + '" id="' + DREAMY_TIP + id + '"><div class="dreamyTipInner"></div></div>');
+            $('body').append('<div class="dreamyTip dt-' + opts.position + '" id="' + DREAMY_TIP + id + '"><div class="dreamyTipInner" style="text-align:' + opts.textAlign + '"></div></div>');
         }
         $this.dreamyTipElememt = $('#' + DREAMY_TIP + id);
         if(opts.closeWithClick){
@@ -163,9 +163,8 @@
                     $this = $(this);
                 // Assign false to dreamyTip as the tooltip is not created yet
                 $this.dreamyTipElememt = false;
-                if(opts.addCursorPointer){
-                    $this.css('cursor', 'pointer');
-                }
+                $this.css('cursor', opts.cursor);
+                
                 //delete title attribute to avoid the default behavior
                 var title = $this.attr('title');
                 if(title!=undefined){
@@ -286,12 +285,14 @@
      * Options
      */
     $.fn[DREAMY_TIP].defaults = {
-        addCursorPointer: true, // add style cursor pointer on the target
+        cursor: 'pointer', // pointer, help, default, etc. Add style cursor on the target
+        textAlign: 'center', // center, left, right, justify
         offsetLeftAdd: 0, // add extra left offset
         offsetTopAdd: 0, // add extra top offset
         backgroundPosition: false, // String to set a different background position (ex. "30px", "5% 10px", "left top")
         fade:  0.9, // opacity of the tooltip
         startDelay: 0, // Add a delay time before the tooltip appear
+        removeQueuedAnimation: false, //A Boolean indicating whether to remove queued animation as well on the show event.
         duration: 'medium', // duration of the animation
         easing: 'swing', //effect
         event:'click', // click, focus, blur & hover are allowed or none in case you want to trigger manually

@@ -148,6 +148,18 @@
                 <span class="ttSD" title="this is a tooltip">click me</span>
             </td>                    
         </tr>
+        <tr>
+            <td>Text align left:</td> 
+            <td>
+                <span class="ttAl" title="this is a <strong>tooltip</strong> with some <em>HTML</em> <br>and aligned to the left.">click me</span>
+            </td>                    
+        </tr>
+        <tr>
+            <td>Cusror "help":</td> 
+            <td>
+                <span class="ttCH" title="this is a <strong>tooltip</strong> with cursor 'help'.">click me</span>
+            </td>                    
+        </tr>
     </table>
     <div id="writeHere"></div>
   </div>
@@ -172,8 +184,8 @@
     $('.ttH').dreamyTip({event:'hover'});
     $('.ttPH').dreamyTip({event:'hover', persistHover:true});
     $('.ttPHT').dreamyTip({event:'hover', persistHover:true,autoCloseAfter:2000});
-    $('.ttF').dreamyTip({addCursorPointer:false,event:'focus'}); 
-    $('.ttBlur').dreamyTip({addCursorPointer:false,event:'blur'}); 
+    $('.ttF').dreamyTip({cursor:'inherit',event:'focus'}); 
+    $('.ttBlur').dreamyTip({cursor:'inherit',event:'blur'}); 
     $('.ttWB').dreamyTip({closeButton: false}); 
     $('.ttOC').dreamyTip({closeButton: false,closeWithClick:true}); 
     $('.ttAC').dreamyTip({closeButton: false,autoCloseAfter:1500}); 
@@ -183,6 +195,8 @@
     $('.ttOS').dreamyTip({callbackOnShow:{f:writeSomething,params:'callbackOnShow: the tooltip appear'}}); 
     $('.ttOH').dreamyTip({callbackOnHide:writeSomething});
     $('.ttSD').dreamyTip({startDelay:1000});
+    $('.ttAl').dreamyTip({textAlign:'left'});
+    $('.ttCH').dreamyTip({cursor:'help'});
 
     // Used as example for the callbacks.
     function writeSomething(msg){
