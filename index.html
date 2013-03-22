@@ -63,6 +63,13 @@
             </td>                    
         </tr>
         <tr>
+            <td>On hover with close button:</td>
+            <td>
+
+                <span class="ttHcb" title="this is a tooltip">hover me</span>
+            </td>                    
+        </tr>
+        <tr>
             <td>On hover and persistent on mouse out:</td>                    
             <td>
 
@@ -175,13 +182,14 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 
-  <script src="js/libs/jquery.dreamyTip.min.js"></script>
+  <script src="js/libs/jquery.dreamyTip.js"></script>
   <script>
       
     $('.tt').dreamyTip();
     $('.ttHTML').dreamyTip();
-    $('.ttMSG').dreamyTip({msg:'This is a nice tooltip.'}); 
-    $('.ttH').dreamyTip({event:'hover'});
+    $('.ttMSG').dreamyTip({msg:'This is a nice tooltip.'});
+    $('.ttH').dreamyTip({event:'hover',position:'left'});
+    $('.ttHcb').dreamyTip({event:'hover',position:'left', closeButtonOnHover: true});
     $('.ttPH').dreamyTip({event:'hover', persistHover:true});
     $('.ttPHT').dreamyTip({event:'hover', persistHover:true,autoCloseAfter:2000});
     $('.ttF').dreamyTip({cursor:'inherit',event:'focus'}); 

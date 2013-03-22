@@ -129,9 +129,10 @@
      * @param {object} $this actual jQuery object
      */
     var createTip = function($this){
+        console.log('createTip')
         var id = $this.data(DREAMY_TIP).id,
             opts = $this.data(DREAMY_TIP).opts;
-        if(opts.closeButton && opts.event != 'hover'){
+        if(opts.closeButton && (opts.event != 'hover' || opts.closeButtonOnHover)){
             $('body').append('<div class="dreamyTip dt-' + opts.position + '" id="' + DREAMY_TIP + id + '"><div class="dreamyTipBtn">x</div><div class="dreamyTipInner" style="text-align:' + opts.textAlign + '"></div></div>');
             $('#dreamyTip' + id + ' .dreamyTipBtn').bind('click', function(){
                 disappear($this);
@@ -146,10 +147,10 @@
             });
         }
         if(opts.fontSize){
-          $this.dreamyTipElememt.css('font-size',opts.fontSize);
+          $this.dreamyTipElememt.css('font-size', opts.fontSize);
         }
         if(opts.backgroundPosition){
-          $this.dreamyTipElememt.css('background-position',opts.backgroundPosition);
+          $this.dreamyTipElememt.css('background-position', opts.backgroundPosition);
         }
     };
 
@@ -298,6 +299,7 @@
         event:'click', // click, focus, blur & hover are allowed or none in case you want to trigger manually
         persistHover: false, // enable a tooltip to persist until the user clicks somewhere else on the page
         closeButton: true, //True for the "x" button in the tooltip
+        closeButtonOnHover: false, //Force close button on hover 
         closeWithClick:false, //True to close when you click the tooltip
         closeOnBlur:false, //True to close when the trigger element lose focus
         autoCloseAfter: false, // milliseconds to wait to auto close
