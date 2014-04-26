@@ -1,20 +1,65 @@
 .dreamyTip{
-    background: url(../images/dreamytip.png) no-repeat bottom center;
     padding: 5px;
     font-size: 11px;
     opacity: 0;
-    filter: alpha(opacity=0); 
+    filter: alpha(opacity=0);
     position: absolute;
     display:none;
 }
-.dreamyTip.dt-bottom{background-position:top center}
-.dreamyTipInner{padding: 7px 10px 6px 10px; background-color: black; color: white; max-width: 200px; text-align: center}
 .dreamyTipInner{
-    border-radius:3px;
-    -moz-border-radius:3px;
+    background-color: #000;
     -webkit-border-radius:3px;
-    -o-border-radius:3px;
+    border-radius:3px;
+    color: #fff;
+    max-width: 200px;
+    padding: 7px 10px 6px 10px;
+    text-align: center
 }
-.dreamyTip.dt-left{background-position: right center}
-.dreamyTip.dt-right{background-position: left center}
-.dreamyTipBtn{color:#fff;font-family:arial; position: absolute; top:3px; right:8px; font-weight: bold; cursor: pointer}
+
+.dreamyTipBtn{
+    color:#fff;
+    cursor: pointer;
+    font-family:arial;
+    font-weight: bold;
+    position: absolute;
+    right:8px;
+    top:3px;
+}
+
+.dreamyTipArrow {
+    border-color: #000 transparent transparent;
+    border-style: solid;
+    border-width: 5px 5px 0;
+    bottom: 0;
+    height: 0;
+    left: 50%;
+    margin-left: -5px;
+    position: absolute;
+    width: 0;
+}
+.dreamyTip.dt-bottom .dreamyTipArrow{
+    border-color: transparent transparent #000;
+    border-width: 0 5px 5px;
+    bottom: auto;
+    top: 0;
+}
+
+.dreamyTip.dt-right .dreamyTipArrow,
+.dreamyTip.dt-left .dreamyTipArrow{
+    bottom: auto;
+    margin: -5px 0 0;
+    top: 50%;
+}
+
+.dreamyTip.dt-left .dreamyTipArrow{
+    border-color: transparent transparent transparent #000;
+    border-width: 5px 0 5px 5px;
+    left: auto;
+    right: 0;
+}
+.dreamyTip.dt-right .dreamyTipArrow{
+    border-color: transparent #000 transparent transparent;
+    border-width: 5px 5px 5px 0;
+    left: 0;
+}
+
